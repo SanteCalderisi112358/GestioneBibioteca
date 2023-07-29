@@ -44,10 +44,11 @@ public class ClassiRunner implements CommandLineRunner {
 		try {
 			Utente utenteCheChiedePrestito = utenteSrv.findById(52);
 			// System.err.println(utenteCheChiedePrestito);
-			Libro libroInPrestito = libroSrv.findById(0);
+			Libro libroInPrestito = libroSrv.findById(543);
 			// System.err.println(libroInPrestito);
-			Prestito prestito = new Prestito(LocalDate.now(), utenteCheChiedePrestito, libroInPrestito);
-		prestitoSrv.save(prestito);
+			Prestito prestito = new Prestito(LocalDate.of(2022, 5, 9), LocalDate.of(2022, 10, 11),
+					utenteCheChiedePrestito, libroInPrestito);
+			prestitoSrv.checkAndSave(prestito);
 		} catch (ItemNotFoundException ex) {
 			System.err.println(ex.getMessage());
 		}

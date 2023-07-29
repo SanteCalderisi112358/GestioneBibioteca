@@ -21,15 +21,17 @@ public class Prestito {
 	private int id;
 	private LocalDate dataPrenotazione;
 	private LocalDate dataRestituzione;
+	private LocalDate dataRestituzioneEffettiva;
 	@ManyToOne
 	private Utente utente;
 	@ManyToOne
 	private Libro libro;
 
-	public Prestito(LocalDate dataPrenotazione, Utente utente, Libro libro) {
+	public Prestito(LocalDate dataPrenotazione, LocalDate dataRestituzioneEffettiva, Utente utente, Libro libro) {
 
 		this.dataPrenotazione = dataPrenotazione;
 		this.dataRestituzione = dataPrenotazione.plusMonths(2);
+		this.dataRestituzioneEffettiva = dataRestituzioneEffettiva;
 		this.utente = utente;
 		this.libro = libro;
 	}
