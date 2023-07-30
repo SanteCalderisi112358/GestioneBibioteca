@@ -85,14 +85,17 @@ public class ClassiRunner implements CommandLineRunner {
 
 			/* RESTITUZIONE LIBRO */
 
-			try {
-				int utenteRestituzione = 52;
-				int libroRestituzione = 7;
-			prestitoSrv.returnBookFromUser(utenteRestituzione, libroRestituzione);
-		} catch (ItemNotFoundException ex) {
-			System.err.println(ex.getMessage());
-		}
+//			try {
+//				int utenteRestituzione = 52;
+//				int libroRestituzione = 7;
+//			prestitoSrv.returnBookFromUser(utenteRestituzione, libroRestituzione);
+//		} catch (ItemNotFoundException ex) {
+//			System.err.println(ex.getMessage());
+//		}
 
+		/* RICERCA PER TITOLO E VISUALIZZAZIONE DISPONIBILITA' */
+		String titoloRicercaDisponibilita = "movin";
+		libroSrv.searchForTitleAndAvailable(titoloRicercaDisponibilita);
 
 
 

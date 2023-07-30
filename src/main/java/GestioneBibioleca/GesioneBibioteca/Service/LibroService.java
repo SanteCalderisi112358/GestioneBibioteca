@@ -68,6 +68,22 @@ public class LibroService {
 		}
 	}
 
+	public void searchForTitleAndAvailable(String titolo) {
+		List<Libro> listaLibriPerTitolo = libroRepo.searchTitle(titolo);
+		if (listaLibriPerTitolo.isEmpty()) {
+			System.err.println("In catalogo non abbiamo nessun libro che contenga: '" + titolo + "' nel titolo");
+		} else {
+			System.err.println(
+					"Lista dei libri che contengono '" + titolo + "' nel proprio titolo e loro disponibilità:");
+			for (int i = 0; i < listaLibriPerTitolo.size(); i++) {
+				String disponibilita = listaLibriPerTitolo.get(i).isInPrestito() ? "IN PRESTITO" : "DISPONIBILE";
+				System.err.println((i + 1) + " - '" + listaLibriPerTitolo.get(i).getTitolo() + "' di "
+						+ listaLibriPerTitolo.get(i).getAutore() + ". ID: " + listaLibriPerTitolo.get(i).getId() + " - "
+						+ disponibilita);
+			}
+		}
+	}
+
 
 
 }
