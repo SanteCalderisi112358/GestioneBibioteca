@@ -1,5 +1,6 @@
 package GestioneBibioleca.GesioneBibioteca.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import GestioneBibioleca.GesioneBibioteca.Dao.IPrestitoRepo;
 import GestioneBibioleca.GesioneBibioteca.Entities.ItemNotFoundException;
 import GestioneBibioleca.GesioneBibioteca.Entities.Libro;
 import GestioneBibioleca.GesioneBibioteca.Entities.Prestito;
+import GestioneBibioleca.GesioneBibioteca.Entities.Utente;
 
 @Service
 public class PrestitoService {
@@ -41,8 +43,7 @@ public void checkAndSave(Prestito prestito) throws ItemNotFoundException {
 		System.err.println("Non puoi prendere in prestito altri libri perchè hai i seguenti libri ancora in prstito: ");
 		libriScadutiPerUtente.forEach(libroScaduto -> System.err.println(libroScaduto));
 	}
-
-	} else if (libro.isInPrestito() && (prestito.getDataRestituzioneEffettiva() != null)) {
+} else if (libro.isInPrestito() && (prestito.getDataRestituzioneEffettiva() != null)) {
 		libro.setInPrestito(false);
 		libroServ.save(libro);
 		System.err.println(libro.getTitolo() + " è stato consegnato il " + prestito.getDataRestituzioneEffettiva());
@@ -50,6 +51,34 @@ public void checkAndSave(Prestito prestito) throws ItemNotFoundException {
 		System.err.println("Il libro " + libro.getTitolo() + " è in prestito");
 
 	}
+
+}
+
+public Prestito findById(int idPrestito) throws ItemNotFoundException {
+	return prestitoRepo.findById(idPrestito).orElseThrow(() -> new ItemNotFoundException(idPrestito));
+
+}
+
+public void justSave(Prestito prestito) {
+	prestitoRepo.save(prestito);
+}
+
+public void returnBookFromUser(int idUtente, int idLibro) throws ItemNotFoundException {
+	Utente utente = utenteSrv.findById(idUtente);
+	Libro libro = libroServ.findById(idLibro);
+	Prestito prestito = prestitoRepo.returnBookFromUser(idUtente, idLibro);
+	if (prestito.getDataRestituzioneEffettiva() == null && libro.isInPrestito() == true) {
+		prestito.setDataRestituzioneEffettiva(LocalDate.now());
+	libro.setInPrestito(false);
+	libroServ.save(libro);
+	prestitoRepo.save(prestito);
+	System.err.println(
+			"Il libro " + libro.getTitolo() + " con id " + libro.getId() + " è stato consegnato da " + utente.getNome()
+					+ " " + utente.getCognome() + "(id: " + utente.getId() + ") il giorno " + LocalDate.now());
+} else {
+	System.err.println("Impossibile! Dai nostri registri risulta che il libro è stato restituito il giorno "
+			+ prestito.getDataRestituzioneEffettiva());
+}
 
 }
 }

@@ -1,6 +1,5 @@
 package GestioneBibioleca.GesioneBibioteca.Entities;
 
-import java.time.LocalDate;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ public class ClassiRunner implements CommandLineRunner {
 	UtenteService utenteSrv;
 	@Autowired
 	LibroService libroSrv;
+
 	@Autowired
 	PrestitoService prestitoSrv;
 	@Override
@@ -41,17 +41,58 @@ public class ClassiRunner implements CommandLineRunner {
 
 		/* PRESTITO */
 
-		try {
-			Utente utenteCheChiedePrestito = utenteSrv.findById(52);
-			// System.err.println(utenteCheChiedePrestito);
-			Libro libroInPrestito = libroSrv.findById(543);
-			// System.err.println(libroInPrestito);
-			Prestito prestito = new Prestito(LocalDate.of(2022, 5, 9), LocalDate.of(2022, 10, 11),
-					utenteCheChiedePrestito, libroInPrestito);
-			prestitoSrv.checkAndSave(prestito);
+//		try {
+//			Utente utenteCheChiedePrestito = utenteSrv.findById(76);
+//			// System.err.println(utenteCheChiedePrestito);
+//			Libro libroInPrestito = libroSrv.findById(546);
+//			// System.err.println(libroInPrestito);
+//			Prestito prestito = new Prestito(LocalDate.of(2022, 5, 9), LocalDate.of(2022, 10, 11),
+//					utenteCheChiedePrestito, libroInPrestito);
+//			prestitoSrv.checkAndSave(prestito);
+//		} catch (ItemNotFoundException ex) {
+//			System.err.println(ex.getMessage());
+//		}
+		
+		/*RICERCA PER TITOLO*/
+
+		String titoloParziale = "way";
+		// libroSrv.searchForTitle(titoloParziale);
+
+			/* RICERCA PER AUTORE */
+			String autoreparziale = "rizz";
+			// libroSrv.searchForAuthor(autoreparziale);
+
+			/* RICERCA LIBRI DISPONIBILI */
+
+			// libroSrv.availableBooks();
+
+			/* RICERCA LISTA LIBRI IN PRESTITO DA UN UTENTE */
+//			try {
+//				int idUtente = 52;
+//				Utente utente = utenteSrv.findById(idUtente);
+//
+//				if (libroSrv.getBooksFromUser(idUtente) == null) {
+//					System.err.println(utente.getNome() + " " + utente.getCognome() + " non ha in prestito nulla.");
+//				} else {
+//					List<Libro> listaInPrestitoDaUtente = libroSrv.getBooksFromUser(idUtente);
+//					System.err.println("Lista dei libri presi in prestito da " + utente.getNome() + " "
+//							+ utente.getCognome() + ":\n");
+//					listaInPrestitoDaUtente.forEach(libro -> System.err.println(libro));
+//				}
+//			} catch (ItemNotFoundException ex) {
+//				System.err.println(ex.getMessage());
+//			}
+
+			/* RESTITUZIONE LIBRO */
+
+			try {
+				int utenteRestituzione = 52;
+				int libroRestituzione = 7;
+			prestitoSrv.returnBookFromUser(utenteRestituzione, libroRestituzione);
 		} catch (ItemNotFoundException ex) {
 			System.err.println(ex.getMessage());
 		}
+
 
 
 
